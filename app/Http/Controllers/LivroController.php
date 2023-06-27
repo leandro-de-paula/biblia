@@ -20,7 +20,16 @@ class LivroController extends Controller
      */
     public function store(Request $request)
     {
-        return Livro::create($request->all());
+        if (Livro::create($request->all())) {
+            return response()->json([
+                'message' => 'Book successfully registered.',
+                'data' => $request->all()
+            ], 201);
+        }
+        return response()->json([
+            'message' => 'Error when registering the book.',
+            'data' => $request->all()
+        ], 404);
     }
 
     /**
@@ -28,7 +37,19 @@ class LivroController extends Controller
      */
     public function show(string $livro)
     {
-        return Livro::findOrFail($livro);
+        $book = Livro::find($livro);
+        if($book) {
+            return response()->json([
+                'message' => 'Book found successful',
+                'data' => $book
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Book not found',
+            'data' => $livro
+        ], 404);
+
     }
 
     /**
@@ -36,11 +57,20 @@ class LivroController extends Controller
      */
     public function update(Request $request, string $livro)
     {
-        $livro = Livro::findOrFail($livro);
+        $book = Livro::find($livro);
+        
+        if($book) {
+            $book->update($request->all());
+            return response()->json([
+                'message' =>  'Update successful.',
+                'data' => $book
+            ], 200);
+        }
 
-        $livro->update($request->all());
-
-        return $livro;
+        return response()->json([
+            'massege' => 'Update unsuccessful.',
+            'data' => $request->all()
+        ], 404);
     }
 
     /**
@@ -48,6 +78,18 @@ class LivroController extends Controller
      */
     public function destroy(string $livro)
     {
-        return Livro::destroy($livro);
+        $book = Livro::destroy($livro);
+        
+        if($book){
+            return response()->json([
+                'message' => 'Delete successful',
+                'data' => $livro
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Delete unsuccessful',
+            'data' => $livro
+        ], 404);
     }
 }
