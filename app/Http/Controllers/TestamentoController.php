@@ -20,7 +20,21 @@ class TestamentoController extends Controller
      */
     public function store(Request $request)
     {
-        return Testamento::create($request->all());
+        $testament = Testamento::create($request->all());
+
+        if ($testament) {
+            return response()->json([
+                'message' => 'Testament successfully registred.',
+                'data' => $request->all()
+            ], 201);
+        }
+
+        return response()->json([
+            'message' => 'Error when registering the testament.',
+            'data' => $request->all()
+        ], 404);
+
+
     }
 
     /**
@@ -28,7 +42,19 @@ class TestamentoController extends Controller
      */
     public function show(string $testamento)
     {
-        return Testamento::findOrFail($testamento);
+        $testament = Testamento::find($testamento);
+        if($testament) {
+            return response()->json([
+                'message' => 'Testament found successful',
+                'data' => $testament
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Testament not found',
+            'data' => $testamento
+        ], 404);
+
     }
 
     /**
@@ -36,10 +62,20 @@ class TestamentoController extends Controller
      */
     public function update(Request $request, string $testamento)
     {
-        $testamento = Testamento::findOrFail($testamento);
-        $testamento->update($request->all());
+        $testament = Testamento::find($testamento);
+        
+        if($testament) {
+            $testament->update($request->all());
+            return response()->json([
+                'message' =>  'Update successful.',
+                'data' => $testament
+            ], 200);
+        }
 
-        return $testamento;
+        return response()->json([
+            'massege' => 'Update unsuccessful.',
+            'data' => $request->all()
+        ], 404);
     }
 
     /**
@@ -47,6 +83,18 @@ class TestamentoController extends Controller
      */
     public function destroy(string $testamento)
     {
-        return Testamento::destroy($testamento);
+        $testament = Testamento::destroy($testamento);
+        
+        if($testament){
+            return response()->json([
+                'message' => 'Delete successful',
+                'data' => $testamento
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Delete unsuccessful',
+            'data' => $testamento
+        ], 404);
     }
 }
