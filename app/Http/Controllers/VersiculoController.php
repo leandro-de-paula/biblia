@@ -20,7 +20,18 @@ class VersiculoController extends Controller
      */
     public function store(Request $request)
     {
-        return Versiculo::create($request->all());
+        $verse = Versiculo::create($request->all());
+        if($verse){
+            return response()->json([
+                'message' => 'Verse successfully registered.',
+                'data' => $request->all()
+            ], 201);
+        }
+
+        return response()->json([
+            'message' => 'Error when registering the verse.',
+            'data' => $request->all()
+        ], 404);
     }
 
     /**
@@ -28,7 +39,18 @@ class VersiculoController extends Controller
      */
     public function show(string $versiculo)
     {
-        return Versiculo::findOrFail($versiculo);
+        $verse = Versiculo::find($versiculo);
+        if ($verse) {
+            return response()->json([
+                'message' => 'Verse found successful',
+                'data' => $verse 
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Verse not found',
+            'data' => $versiculo
+        ], 404);
     }
 
     /**
@@ -36,11 +58,19 @@ class VersiculoController extends Controller
      */
     public function update(Request $request, string $versiculo)
     {
-        $versiculo = Versiculo::findOrFail($versiculo);
-
-        $versiculo->update($request->all());
-
-        return $versiculo;
+        $verse = Versiculo::find($versiculo);
+        if ($verse) {
+            $verse->update($request->all());
+            return response()->json([
+                'message' => 'Update successful.',
+                'data' => $verse
+            ], 200);
+        }
+        
+        return response()->json([
+            'message' => 'Update unsuccessful.',
+            'data' => $request->all()
+        ], 404);
     }
 
     /**
@@ -48,6 +78,18 @@ class VersiculoController extends Controller
      */
     public function destroy(string $versiculo)
     {
-        return Versiculo::destroy($versiculo);
+        $verse = Versiculo::destroy($versiculo);
+        
+        if($verse){
+            return response()->json([
+                'message' => 'Delete successful',
+                'data' => $versiculo
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Delete unsuccessful',
+            'data' => $versiculo
+        ], 404);
     }
 }
