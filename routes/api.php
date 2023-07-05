@@ -48,15 +48,21 @@ Route::get('/teste', function(){
 
 
 // 3 -> Terceira forma de rota
-Route::apiResources([
-    'versiculo' => VersiculoController::class,
-    'livro' => LivroController::class,
-    'testamento' => TestamentoController::class,
-]);
+// Route::apiResources([
+//     'versiculo' => VersiculoController::class,
+//     'livro' => LivroController::class,
+//     'testamento' => TestamentoController::class,
+// ]);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// 4 -> Forma de rota segura
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::apiResources([
+        'versiculo' => VersiculoController::class,
+        'livro' => LivroController::class,
+        'testamento' => TestamentoController::class,
+    ]);
+});
