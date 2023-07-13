@@ -65,4 +65,6 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
         'livro' => LivroController::class,
         'testamento' => TestamentoController::class,
     ]);
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
