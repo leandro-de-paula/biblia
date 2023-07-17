@@ -46,7 +46,10 @@ class TestamentoController extends Controller
         if($testament) {
             return response()->json([
                 'message' => 'Testament found successful',
-                'data' => $testament
+                'data' => [
+                    'testamentos' => $testament,
+                    'livros' => $testament->livros
+                ]
             ], 200);
         }
 
