@@ -48,7 +48,7 @@ class TestamentoController extends Controller
                 'message' => 'Testament found successful',
                 'data' => [
                     'testamentos' => $testament,
-                    'livros' => $testament->livros
+                    'livros' => $testament->livro
                 ]
             ], 200);
         }
