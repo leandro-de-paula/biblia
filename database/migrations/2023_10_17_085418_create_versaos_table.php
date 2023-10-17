@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('idiomas', function (Blueprint $table) {
+        Schema::create('versoes', function (Blueprint $table) {
             $table->id();
             $table->string("nome");
+            $table->string("abreviacao");
+            $table->unsignedBigInteger("idioma_id");
             $table->timestamps();
+
+            $table->foreign("idioma_id")->references("id")->on("idiomas");
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('idiomas');
+        Schema::dropIfExists('versoes');
     }
 };
